@@ -21,7 +21,7 @@ const Register = ({ onRegisterSuccess }) => {
         username,
         email,
         password,
-        role: parseInt(role), // Convert role to integer before sending
+        role, 
       });
       console.log('Registration successful:', response.data);
       onRegisterSuccess();
@@ -29,7 +29,7 @@ const Register = ({ onRegisterSuccess }) => {
       console.log('Error caught:', error);
       if (error.response) {
         if (error.response.status === 400) {
-          setError('Username and email must be unique!');
+          setError(error.response.data);
         } else {
           setError(error.response.data.error || 'An error occurred');
         }
@@ -100,7 +100,6 @@ const Register = ({ onRegisterSuccess }) => {
           <select id="role" name="role" value={role} onChange={(e) => setRole(e.target.value)}>
             <option value="0">User</option>
             <option value="1">Author</option>
-            <option value="2">Admin</option>
           </select>
         </div>
         <button type="submit">Register</button>
