@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Ensure axios is installed: npm install axios
+import axios from 'axios';
 
-const Login = () => {
+const Login = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -9,36 +9,44 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/login', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
         email,
-        password
+        password,
       });
-      localStorage.setItem('token', response.data.token); // Example: Store token in local storage
-      // Redirect or set state to indicate successful login
-      // Example: history.push('/dashboard');
+      localStorage.setItem('token', response.data.token); 
       setEmail('');
       setPassword('');
       setError(null);
+      onLoginSuccess();
     } catch (error) {
-      setError(error.response.data.error);
+      setError(error.response?.data?.error || 'An error occurred');
     }
   };
 
   return (
     <div>
-      <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleLogin}>
         <div>
           <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </div>
         <div>
           <label>Password:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
         <button type="submit">Login</button>
       </form>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
     </div>
   );
 };

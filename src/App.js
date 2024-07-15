@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
@@ -22,17 +22,17 @@ const App = () => {
         <Navbar />
         <div className="main-content">
           <Routes>
-            <Route path="/" exact component={HomePage} />
-            <Route path="/search" component={SearchPage} />
-            <Route path="/profile" exact component={ProfilePage} />
-            <Route path="/profile/edit" component={EditProfile} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/register" component={RegisterPage} />
-            <Route path="/books" exact component={BookList} />
-            <Route path="/books/:bookId" component={BookDetail} />
-            <Route path="/authors" exact component={AuthorList} />
-            <Route path="/authors/:authorId" component={AuthorDetail} />
-            <Route path="/user/profile" exact component={UserProfile} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/edit" element={<EditProfile />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/books" element={<BookList />} />
+            <Route path="/books/:bookId" element={<BookDetail />} />
+            <Route path="/authors" element={<AuthorList />} />
+            <Route path="/authors/:authorId" element={<AuthorDetail />} />
+            <Route path="/user/profile" element={<UserProfile />} />
           </Routes>
         </div>
         <Footer />
