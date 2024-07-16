@@ -9,18 +9,41 @@ const Login = ({ onLoginSuccess }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
-        email,
-        password,
-      });
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('role', response.data.role); // Store role in localStorage
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, { email, password });
+
+      // Log the entire response to debug
+      console.log('Response:', response);
+
+      // Access token and role from the response
+      const token = response.data.token;
+      const role = response.data.role;
+
+      console.log(token);
+
+      // Check if token and role are undefined
+      if (!token || !role) {
+        throw new Error('Token or role is undefined');
+      }
+
+      // Store the token and role in localStorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', role);
+
+      // Log to ensure the token is stored
+      console.log('Token stored in localStorage:', token);
+
+      // Clear input fields and error state after successful login
       setEmail('');
       setPassword('');
       setError(null);
+
+      // Call the onLoginSuccess function passed as a prop
       onLoginSuccess();
+
     } catch (error) {
-      setError(error.response?.data?.error || 'An error occurred');
+      // Handle and set error state if login fails
+      setError(error.response?.data?.error || error.message || 'An error occurred');
+      console.error('Login failed', error);
     }
   };
 

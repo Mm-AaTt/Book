@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const FeaturedBooks = () => {
-  // Sample data for featured books, replace with real data
-  const books = [
-    { id: 1, title: 'Book 1', author: 'Author 1' },
-    { id: 2, title: 'Book 2', author: 'Author 2' },
-    { id: 3, title: 'Book 3', author: 'Author 3' }
-  ];
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    const fetchLatestBooks = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/book/latest`);
+        setBooks(response.data); // Assuming response.data is an array of books
+      } catch (error) {
+        console.error('Error fetching latest books:', error);
+        // Handle error, e.g., setBooks([]) or show an error message
+      }
+    };
+
+    fetchLatestBooks();
+  }, []);
 
   return (
     <div className="featured-books">
