@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Ensure axios is installed: npm install axios
+import { useParams } from 'react-router-dom'; // Import useParams hook
+import axios from 'axios';
 
 const BookList = () => {
-  const [books, setBooks] = useState([]);
+  const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // useParams returns an object of URL parameters
+  const { bookId } = useParams();
+
   useEffect(() => {
-    const fetchBooks = async () => {
+    const fetchBook = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/books');
-        setBooks(response.data.books);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/book/latest`);
+        setBook(response.data.book);
         setLoading(false);
         setError(null);
       } catch (error) {
@@ -19,26 +23,25 @@ const BookList = () => {
       }
     };
 
-    fetchBooks();
-  }, []);
+    fetchBook();
+  }, [bookId]); // Dependency on bookId ensures fetch on parameter change
 
-  if (loading) return <p>Loading books...</p>;
+  if (loading) return <p>Loading book details...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
-  if (books.length === 0) return <p>No books found.</p>;
+  if (!book) return <p>No book found.</p>;
 
   return (
     <div>
-      <h2>Books</h2>
-      <ul>
-        {books.map(book => (
-          <li key={book._id}>
-            <p><strong>Title:</strong> {book.title}</p>
-            <p><strong>Author:</strong> {book.author}</p>
-            <p><strong>Genre:</strong> {book.genre}</p>
-            {/* Add more details as needed */}
-          </li>
-        ))}
-      </ul>
+      <h2>Book Details</h2>
+      <p><strong>Title:</strong> {book.title}</p>
+      <p><strong>ISBN:</strong> {book.isbn}</p>
+      <p><strong>Publication Date:</strong> {book.publication_date}</p>
+      <p><strong>Publisher:</strong> {book.publisher}</p>
+      <p><strong>Language:</strong> {book.language}</p>
+      <p><strong>Cover Image URL:</strong> {book.cover_image_url}</p>
+      <p><strong>Description:</strong> {book.description}</p>
+      <p><strong>Created At:</strong> {book.created_at}</p>
+      <p><strong>Updated At:</strong> {book.updated_at}</p>
     </div>
   );
 };

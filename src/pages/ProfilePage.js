@@ -11,13 +11,22 @@ const ProfilePage = () => {
     // Fetch user data on component mount
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('/api/user/profile'); // Replace with your API endpoint
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/me`);// Replace with your API endpoint
         setUserData(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching user data:', error);
-        setError('Failed to fetch user data. Please try again.');
-        setLoading(false);
+        console.log('Error caught:', error);
+        if (error.response) {
+          if (error.response.status === 400) {
+            setError(error.response.data);
+          } else {
+            setError(error.response.data|| 'An error occurred');
+          }
+        } else if (error.request) {
+          setError('No response received from the server.');
+        } else {
+          setError('Request failed. Please try again later.');
+        }
       }
     };
 

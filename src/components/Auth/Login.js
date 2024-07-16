@@ -13,7 +13,8 @@ const Login = ({ onLoginSuccess }) => {
         email,
         password,
       });
-      localStorage.setItem('token', response.data.token); 
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('role', response.data.role); // Store role in localStorage
       setEmail('');
       setPassword('');
       setError(null);

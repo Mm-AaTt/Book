@@ -31,7 +31,7 @@ const Register = ({ onRegisterSuccess }) => {
         if (error.response.status === 400) {
           setError(error.response.data);
         } else {
-          setError(error.response.data.error || 'An error occurred');
+          setError(error.response.data|| 'An error occurred');
         }
       } else if (error.request) {
         setError('No response received from the server.');

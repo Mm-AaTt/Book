@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
@@ -13,7 +13,13 @@ import AuthorList from './components/Authors/AuthorList';
 import AuthorDetail from './components/Authors/AuthorDetail';
 import UserProfile from './components/Profile/UserProfile';
 import EditProfile from './components/Profile/EditProfile';
+import AddBook from './components/Authors/AddBook'; // Import the new AddBook component
 import './assets/styles/style.css';
+
+const PrivateRoute = ({ element, ...rest }) => {
+  const role = localStorage.getItem('role');
+  return role === '1' ? element : <Navigate to="/login" />;
+};
 
 const App = () => {
   return (
@@ -31,8 +37,9 @@ const App = () => {
             <Route path="/books" element={<BookList />} />
             <Route path="/books/:bookId" element={<BookDetail />} />
             <Route path="/authors" element={<AuthorList />} />
-            <Route path="/authors/:authorId" element={<AuthorDetail />} />
+            <Route path="/authors/:authorId" element={<PrivateRoute element={<AuthorDetail />} />} />
             <Route path="/user/profile" element={<UserProfile />} />
+            <Route path="/author/addbook" element={<PrivateRoute element={<AddBook />} />} /> {/* Added route for AddBook */}
           </Routes>
         </div>
         <Footer />

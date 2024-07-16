@@ -11,7 +11,7 @@ const BookDetail = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/books/${bookId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/book/details/${bookId}`);
         setBook(response.data.book);
         setLoading(false);
         setError(null);
