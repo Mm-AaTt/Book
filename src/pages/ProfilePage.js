@@ -11,7 +11,7 @@ const ProfilePage = () => {
     // Fetch user data on component mount
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/me`);// Replace with your API endpoint
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/`);// Replace with your API endpoint
         setUserData(response.data);
         setLoading(false);
       } catch (error) {
