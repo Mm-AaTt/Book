@@ -36,7 +36,7 @@ const HomePage = () => {
   const handleAddBook = async (formData) => {
     try {
       const token = localStorage.getItem('token'); // Assuming you store the token in localStorage after login
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/book/add`, formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/author/addbook`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data' // Important for handling file uploads
