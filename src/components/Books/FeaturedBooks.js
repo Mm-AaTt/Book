@@ -19,17 +19,27 @@ const FeaturedBooks = () => {
     fetchLatestBooks();
   }, []);
 
+  
   return (
-    <div className="featured-books">
+     <div className="featured-books">
       {books.map(book => (
         <div key={book.id} className="book">
           <h3>{book.title}</h3>
           <p>by {book.author}</p>
-          <Link to={`/books/${book.id}`}>View Details</Link>
-        </div>
+          <Link to={`${process.env.REACT_APP_API_URL}/book/details/${book.id}`}>View Details</Link>
+        </div> 
       ))}
     </div>
   );
 };
 
 export default FeaturedBooks;
+
+
+  /*   <div className="featured-books">
+      <h3>{book.title}</h3>
+      <p>Author: {book.author}</p>
+      <p>Genre: {book.genre}</p>
+      <Link to={`/book/details/${book.id}`}>View Details</Link>
+    </div>
+ */

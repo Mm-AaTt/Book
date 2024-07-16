@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Ensure axios is installed: npm install axios
-import { useParams } from 'react-router-dom'; // Ensure react-router-dom is installed: npm install react-router-dom
+import axios from 'axios';
+import { useParams } from 'react-router-dom'; // Import useParams from react-router-dom
 
 const BookDetail = () => {
-  const { bookId } = useParams(); // Assumes you're using react-router for routing
+  const { bookId } = useParams(); // Get bookId from URL params
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,8 +11,10 @@ const BookDetail = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
+        // Fetch book details using the bookId from URL
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/book/details/${bookId}`);
-        setBook(response.data.book);
+        console.log(response);
+        setBook(response.data.book); // Assuming API response has a 'book' object
         setLoading(false);
         setError(null);
       } catch (error) {
@@ -22,7 +24,7 @@ const BookDetail = () => {
     };
 
     fetchBook();
-  }, [bookId]);
+  }, [bookId]); // Re-fetch book details whenever bookId changes
 
   if (loading) return <p>Loading book details...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;

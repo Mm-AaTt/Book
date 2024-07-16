@@ -16,14 +16,14 @@ const Login = ({ onLoginSuccess }) => {
 
       // Access token and role from the response
       const token = response.data.token;
-      const role = response.data.role;
+      const role = response.data.user.user_role;
 
       console.log(token);
 
       // Check if token and role are undefined
-      if (!token || !role) {
+      /* if (!token || !role) {
         throw new Error('Token or role is undefined');
-      }
+      } */
 
       // Store the token and role in localStorage
       localStorage.setItem('token', token);

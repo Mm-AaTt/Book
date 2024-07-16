@@ -9,7 +9,7 @@ const AuthorList = () => {
   useEffect(() => {
     const fetchAuthors = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/author`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/author/`);
         setAuthors(response.data.authors);
         setLoading(false);
         setError(null);
