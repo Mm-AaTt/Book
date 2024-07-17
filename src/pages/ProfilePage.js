@@ -18,48 +18,7 @@ const ProfilePage = () => {
           setLoading(false);
           return;
         }
-
-        // Function to check if token is expired
-        const isTokenExpired = (token) => {
-          const decodedToken = JSON.parse(atob(token.split('.')[1]));
-          return Date.now() >= decodedToken.exp * 1000;
-        };
-
-        if (isTokenExpired(token)) {
-          // Handle token refresh logic
-          try {
-            const refreshToken = localStorage.getItem('refreshToken');
-            if (!refreshToken) {
-              setError('No refresh token found. Please log in again.');
-              setLoading(false);
-              return;
-            }
-
-            const refreshResponse = await axios.post(`${process.env.REACT_APP_API_URL}/refresh-token`, {
-              refreshToken
-            });
-
-            const newToken = refreshResponse.data.token;
-            localStorage.setItem('token', newToken);
-
-            // Retry the original request with the new token
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/`, {
-              headers: {
-                Authorization: `Bearer ${newToken}`
-              }
-            });
-
-            console.log('User Data:', response.data); // Log the response data to check structure
-            setUserData(response.data);
-            setLoading(false);
-          } catch (refreshError) {
-            console.error('Token refresh failed:', refreshError);
-            setError('Token refresh failed. Please log in again.');
-            setLoading(false);
-          }
-        } else {
-          // Token is valid, proceed with fetching user data
-          const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/`, {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/me`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -69,7 +28,7 @@ const ProfilePage = () => {
           setUserData(response.data);
           setLoading(false);
         }
-      } catch (error) {
+      catch (error) {
         console.error('Error caught:', error);
         if (error.response) {
           if (error.response.status === 401) {
@@ -91,6 +50,7 @@ const ProfilePage = () => {
     fetchUserData();
   }, []);
 
+  console.log(userData);
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -117,3 +77,5 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+
+

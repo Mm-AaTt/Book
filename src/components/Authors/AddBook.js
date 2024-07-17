@@ -31,7 +31,7 @@ const AddBook = () => {
     formData.append('book_cover', bookCover);
 
     try {
-      const response = await axios.post('/api/books', formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/author/addbook/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -39,6 +39,9 @@ const AddBook = () => {
       });
       alert('Book added successfully');
       navigate('/author/books');
+
+    console.log(response);  
+
     } catch (error) {
       alert('Failed to add book');
       console.error('There was an error!', error);
